@@ -67,8 +67,8 @@ protected:
 
 	struct Vertex
 	{
-		glm::vec3 p;
-		glm::vec3 n;
+		glm::vec2 p;
+		glm::vec2 n;
 	};
 
 	// NxM darab négyszöggel közelítjük a parametrikus felületünket => (N+1)x(M+1) pontban kell kiértékelni

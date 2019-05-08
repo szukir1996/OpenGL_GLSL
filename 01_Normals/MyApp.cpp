@@ -25,6 +25,7 @@ glm::vec3 CMyApp::toDesc(float fi, float theta) {
 // egy parametrikus felület (u,v) paraméterértékekhez tartozó pontjának
 // kiszámítását végzõ függvény
 //
+/*
 glm::vec3 CMyApp::GetPos(float u, float v)
 {
 	// origó középpontú, egységsugarú gömb parametrikus alakja: http://hu.wikipedia.org/wiki/G%C3%B6mb#Egyenletek 
@@ -50,13 +51,14 @@ glm::vec3 CMyApp::GetNorm(float u, float v)
 	return glm::vec3(cu*sv, cv, su*sv);
 	*/
 	// Numerikusan (nem kell ismerni a képletet, elég a pozícióét)
+/*
 	glm::vec3 uv = GetPos(u, v);
 	glm::vec3 du = GetPos(u+0.01, v)-GetPos(u-0.01, v);
 	glm::vec3 dv = GetPos(u, v+0.01)-GetPos(u, v-0.01);
 
 	return (glm::cross(du, dv));
 }
-
+*/
 
 bool CMyApp::Init()
 {
@@ -79,8 +81,8 @@ bool CMyApp::Init()
 			float u = i / (float)N;
 			float v = j / (float)M;
 
-			vert[i + j*(N + 1)].p = GetPos(u, v);
-			vert[i + j*(N + 1)].n = GetNorm(u, v);
+			vert[i + j*(N + 1)].p = glm::vec2(u,v);
+			vert[i + j*(N + 1)].n = glm::vec2(u,v);
 		}
 
 	// indexpuffer adatai: NxM négyszög = 2xNxM háromszög = háromszöglista esetén 3x2xNxM index
@@ -113,7 +115,6 @@ bool CMyApp::Init()
 			indices[6*i + j*3*2*(N) + 5] = (i)		+ (j+1)*(N+1);
 		}
 
-
 	// 1 db VAO foglalasa
 	glGenVertexArrays(1, &m_vaoID);
 	// a frissen generált VAO beallitasa aktívnak
@@ -133,7 +134,7 @@ bool CMyApp::Init()
 	glEnableVertexAttribArray(0); // ez lesz majd a pozíció
 	glVertexAttribPointer(
 		0,				// a VB-ben található adatok közül a 0. "indexû" attribútumait állítjuk be
-		3,				// komponens szam
+		2,				// komponens szam
 		GL_FLOAT,		// adatok tipusa
 		GL_FALSE,		// normalizalt legyen-e
 		sizeof(Vertex),	// stride (0=egymas utan)
@@ -144,11 +145,11 @@ bool CMyApp::Init()
 	glEnableVertexAttribArray(1); // ez lesz majd a szín
 	glVertexAttribPointer(
 		1,
-		3, 
+		2, 
 		GL_FLOAT,
 		GL_FALSE,
 		sizeof(Vertex),
-		(void*)(sizeof(glm::vec3)) );
+		(void*)(sizeof(glm::vec2)) );
 
 	// index puffer létrehozása
 	glGenBuffers(1, &m_ibID);
