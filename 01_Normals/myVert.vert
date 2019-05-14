@@ -18,8 +18,6 @@ vec3 pos;
 vec3 norm;
 
 vec3 GetPos(float u, float v){
-	u *= 2*3.1415;
-	v *= 2*3.1415;
 	float r = 2;
 	float tanh = (exp(2*(u-3.1415))-1)/(exp(2*(u-3.1415))+1);
 

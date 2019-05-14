@@ -69,6 +69,8 @@ bool CMyApp::Init()
 	glEnable(GL_DEPTH_TEST); // mélységi teszt bekapcsolása (takarás)
 	glCullFace(GL_BACK); // GL_BACK: a kamerától "elfelé" nézõ lapok, GL_FRONT: a kamera felé nézõ lapok
 
+	//glPolygonMode(GL_BACK, GL_LINE);
+
 	//
 	// geometria letrehozasa
 	//
@@ -78,9 +80,8 @@ bool CMyApp::Init()
 	for (int i=0; i<=N; ++i)
 		for (int j = 0; j <= M; ++j)
 		{
-			float u = i / (float)N;
-			float v = j / (float)M;
-
+			float u = i / (float)N* 2 * 3.1415;
+			float v = j / (float)M* 2 * 3.1415;
 			vert[i + j*(N + 1)].p = glm::vec2(u,v);
 			vert[i + j*(N + 1)].n = glm::vec2(u,v);
 		}
