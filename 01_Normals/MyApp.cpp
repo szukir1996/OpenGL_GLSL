@@ -80,10 +80,10 @@ bool CMyApp::Init()
 	for (int i=0; i<=N; ++i)
 		for (int j = 0; j <= M; ++j)
 		{
-			float u = i / (float)N* 2 * 3.1415;
-			float v = j / (float)M* 2 * 3.1415;
-			vert[i + j*(N + 1)].p = glm::vec2(u,v);
-			vert[i + j*(N + 1)].n = glm::vec2(u,v);
+			float u = i / (float)N * 2* M_PI;
+			float v = j / (float)M * 2* M_PI;
+			vert[i + j * (N + 1)].p = glm::vec2(u, v);
+			vert[i + j * (N + 1)].p = glm::vec2(u, v);
 		}
 
 	// indexpuffer adatai: NxM négyszög = 2xNxM háromszög = háromszöglista esetén 3x2xNxM index
@@ -280,6 +280,7 @@ void CMyApp::Render()
 
 	// shader bekapcsolasa
 	glUseProgram( m_programID );
+	glBindVertexArray(m_vaoID);
 
 	// shader parameterek beállítása
 	glUniform3fv(m_loc_eye, 1, &m_eye[0]);
@@ -293,22 +294,13 @@ void CMyApp::Render()
 
 	*/
 	m_matWorld = glm::mat4(1.0f);
-
 	glm::mat4 mvp = m_matProj * m_matView * m_matWorld;
-
-	// majd küldjük át a megfelelõ mátrixot!
-	glUniformMatrix4fv( m_loc_mvp,// erre a helyre töltsünk át adatot
-						1,			// egy darab mátrixot
-						GL_FALSE,	// NEM transzponálva
-						&(mvp[0][0]) ); // innen olvasva a 16 x sizeof(float)-nyi adatot
-
 	glm::mat4 WorldIT = glm::inverse(glm::transpose(m_matWorld));
 
+	// majd küldjük át a megfelelõ mátrixot!
+	glUniformMatrix4fv( m_loc_mvp,1,GL_FALSE,&(mvp[0][0]) ); 
 	glUniformMatrix4fv(m_loc_wit, 1, GL_FALSE, &(WorldIT[0][0]));
 	glUniformMatrix4fv(m_loc_w, 1, GL_FALSE, &(m_matWorld[0][0]));
-
-	// kapcsoljuk be a VAO-t (a VBO jön vele együtt)
-	glBindVertexArray(m_vaoID);
 
 	// kirajzolás
 	glDrawElements(	GL_TRIANGLES,		// primitív típus

@@ -36,7 +36,6 @@ void main()
 {
 	float u = vs_in_pos.x;
 	float v = vs_in_pos.y;
-	float r = 2;
 
 	gl_Position = MVP * vec4( GetPos(u,v), 1 );
 	vs_out_pos  = (world * vec4( GetPos(u,v), 1 )).xyz;
